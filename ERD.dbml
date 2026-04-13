@@ -1,0 +1,48 @@
+enum DayType {
+  Weekday
+  Saturday
+  Sunday
+}
+
+enum RouteName {
+  "1"
+  "2"
+  "3"
+  "4"
+  "5"
+  "6"
+  6X
+  "7"
+  7X
+  GS
+  A
+  B
+  C
+  E
+  F
+  FS
+  G
+  H
+  L
+  M
+  N
+  W
+  Q
+  D
+  FX
+  J
+  Z
+  R
+  SI
+}
+
+Table Scheduled_trips {
+  trip_id string [primary key]
+  route_id RouteName
+  trip_header DayType
+  short_id string [unique]
+}
+
+Table Day_Trips {
+	amogus int
+}
