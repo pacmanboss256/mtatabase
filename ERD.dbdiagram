@@ -1,0 +1,202 @@
+{
+  "version": "1.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "detailLevel": "All",
+  "tablePositions": [
+    {
+      "name": "trips_txt",
+      "schemaName": "public",
+      "x": -237.8497942423469,
+      "y": -82.36340371333534
+    },
+    {
+      "name": "stop_times_txt",
+      "schemaName": "public",
+      "x": -292.7289822681866,
+      "y": -447.2866363185613
+    },
+    {
+      "name": "full_trip_id",
+      "schemaName": "public",
+      "x": 73.79160138614293,
+      "y": -300.33281108914326
+    },
+    {
+      "name": "Schedule",
+      "schemaName": "public",
+      "x": 716.5199413027325,
+      "y": -161.15278197277212
+    },
+    {
+      "name": "day_trips",
+      "schemaName": "public",
+      "x": -231.4834979633726,
+      "y": 149.94563757736069
+    },
+    {
+      "name": "day_stops",
+      "schemaName": "public",
+      "x": -179.15559954467855,
+      "y": 413.7404559707285
+    },
+    {
+      "name": "LoggedTrips",
+      "schemaName": "public",
+      "x": 726.8706156120619,
+      "y": 213.10667556801582
+    }
+  ],
+  "tableGroupCollapseStates": [],
+  "stickyNoteLayouts": [],
+  "referencePaths": [
+    {
+      "firstFieldNames": [
+        "stop_id"
+      ],
+      "firstTableName": "full_trip_id",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "stop_id"
+      ],
+      "secondTableName": "stop_times_txt",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "arrival_time"
+      ],
+      "firstTableName": "full_trip_id",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "arrival_time"
+      ],
+      "secondTableName": "stop_times_txt",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "departure_time"
+      ],
+      "firstTableName": "full_trip_id",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "departure_time"
+      ],
+      "secondTableName": "stop_times_txt",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "full_trip_id"
+      ],
+      "firstTableName": "trips_txt",
+      "firstSchemaName": "public",
+      "firstRelation": "*",
+      "secondFieldNames": [
+        "full_trip_id"
+      ],
+      "secondTableName": "Schedule",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "full_trip_id"
+      ],
+      "firstTableName": "stop_times_txt",
+      "firstSchemaName": "public",
+      "firstRelation": "*",
+      "secondFieldNames": [
+        "full_trip_id"
+      ],
+      "secondTableName": "Schedule",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "full_trip_id"
+      ],
+      "firstTableName": "stop_times_txt",
+      "firstSchemaName": "public",
+      "firstRelation": "*",
+      "secondFieldNames": [
+        "full_trip_id"
+      ],
+      "secondTableName": "full_trip_id",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "full_trip_id"
+      ],
+      "firstTableName": "full_trip_id",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "full_trip_id"
+      ],
+      "secondTableName": "Schedule",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "trip_uid"
+      ],
+      "firstTableName": "LoggedTrips",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "trip_uid"
+      ],
+      "secondTableName": "day_trips",
+      "secondSchemaName": "public",
+      "secondRelation": "*",
+      "checkPoints": []
+    },
+    {
+      "firstFieldNames": [
+        "trip_uid"
+      ],
+      "firstTableName": "day_stops",
+      "firstSchemaName": "public",
+      "firstRelation": "1",
+      "secondFieldNames": [
+        "trip_uid"
+      ],
+      "secondTableName": "LoggedTrips",
+      "secondSchemaName": "public",
+      "secondRelation": "1",
+      "checkPoints": [
+        {
+          "x": 238.90911441694092,
+          "y": 461.7404559707285
+        },
+        {
+          "x": 238.90911441694092,
+          "y": 367.7305092891912
+        },
+        {
+          "x": 407.41279322231037,
+          "y": 367.7305092891912
+        }
+      ]
+    }
+  ]
+}

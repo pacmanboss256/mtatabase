@@ -36,13 +36,104 @@ enum RouteName {
   SI
 }
 
-Table Scheduled_trips {
-  trip_id string [primary key]
-  route_id RouteName
-  trip_header DayType
-  short_id string [unique]
+Project MTAtabase {
+  Note: '''
+    Types: 
+    DayType   - Service ID 
+    RouteName - MTA route identifier
+    Time      - HH:MM:SS time format
+    timestamp - Timestamp integer
+    Stop_ID   - MTA stop identifier
+  '''
 }
 
-Table Day_Trips {
-	amogus int
+Table trips_txt {
+  Note: 'GTFS file'
+  full_trip_id string [primary key]
+  route_id RouteName
+  trip_header DayType
 }
+
+Table stop_times_txt {
+  Note: 'GTFS file'
+  "(full_trip_id,stop_id)" Tuple [primary key]
+	full_trip_id string
+  stop_id Stop_ID [Ref: > full_trip_id.stop_id]
+  arrival_time Time [Ref: > full_trip_id.arrival_time]
+  departure_time Time [Ref: > full_trip_id.departure_time]
+}
+
+Table full_trip_id {
+  Note: "Generated using pandas group_by on stops so each full_trip_id has a single entry"
+  full_trip_id string
+  stop_id Stop_ID [primary key]
+  arrival_time Time
+  departure_time Time
+}
+
+Table Schedule {
+  Note: "Schedule class object"
+  full_trip_id string [primary key]
+  shape_id string
+  service_id DayType
+  route_id RouteName
+  short_id string
+  tiny_id string
+  stop list(Stop_ID)
+  arrival_times list(time)
+  departure_times list(time)
+}
+
+Ref: trips_txt.full_trip_id > Schedule.full_trip_id
+Ref: stop_times_txt.full_trip_id > Schedule.full_trip_id
+
+
+Ref: "stop_times_txt"."full_trip_id" > "full_trip_id"."full_trip_id"
+
+Ref: "full_trip_id"."full_trip_id" < "Schedule"."full_trip_id"
+
+TableGroup "GTFS" {
+  stop_times_txt
+  trips_txt
+  full_trip_id
+}
+
+TableGroup "LoggedTrips" {
+  note: "each of these represents one day"
+  day_trips
+  day_stops
+  LoggedTrips
+}
+
+Table day_trips {
+  trip_uid string [ref: > LoggedTrips.trip_uid]
+  trip_id string 
+  route_id RouteName 
+  start_time timestamp
+}
+
+Table day_stops {
+  trip_uid string
+  stop_id Stop_ID
+  arrival_time timestamp
+  departure_time timestamp
+}
+
+Table LoggedTrips {
+  trip_id string
+  trip_uid string
+  route_id RouteName
+  short_id string
+  tiny_id string
+  _ ""
+  stop_id Stop_ID
+  arrival_time timestamp
+  departure_time timestamp
+
+
+  indexes {
+    (trip_uid, stop_id) [pk]
+  }
+}
+
+ref: day_stops.trip_uid - LoggedTrips.trip_uid
