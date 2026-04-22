@@ -3,8 +3,45 @@ from typing import Callable
 import numpy as np
 import datetime
 from zoneinfo import ZoneInfo
+from typing import Literal
+
+### Types and Constants
 
 UTC = ZoneInfo("UTC")
+
+DayType = Literal['Weekday','Saturday','Sunday']
+
+
+### Classes
+
+class TripDate:
+	'''quick object for timestamp boundaries and trip date'''
+	def __init__(self, year:int, month:int, day:int):
+		self.year = year
+		self.month = month
+		self.day = day
+		self.start_time = int(datetime.datetime(year,month,day).timestamp())
+		self.end_time = int((datetime.datetime(year,month,day) + datetime.timedelta(1)).timestamp())
+		
+	def date(self) -> datetime.datetime:
+		'''return datetime object'''
+		return datetime.datetime(self.year,self.month,self.day)
+
+	def __repr__(self) -> str:
+		return self.date().strftime('%Y-%m-%d')
+
+
+### Functions
+
+def get_DayType(date: datetime.datetime) -> DayType:
+	'''convert datetime object into service_id day type'''
+	match date.weekday():
+		case 6:
+			return 'Sunday'
+		case 5:
+			return 'Saturday'
+		case _:
+			return 'Weekday'
 
 
 def zip_reduce(a: list, b: list, f: Callable) -> list:
@@ -27,3 +64,4 @@ def timestamp_to_mta(ts: int) -> int:
 	'''Convert a timestamp value into MTA time (which is in hundredths of a minute past midnight relative to UTC)'''
 	t = datetime.datetime.fromtimestamp(ts, tz=UTC).time()
 	return int((t.hour*60 + t.minute + t.second/60)*100)
+	

@@ -1,4 +1,4 @@
-import requests
+import requests # type: ignore
 import zipfile
 
 
@@ -44,7 +44,7 @@ def get_old_gtfs():
     '''Download old schedules from mta open data on socrata, using their API. Not implemented yet.'''
     return
 
-def get_subwaydata():
+def get_subwaydata(dates):
     '''Get the desired data files from subwaydata.nyc'''
     for month,day,year in dates:
         file_name = f"subwaydatanyc_{year}-{month:02}-{day:02}_csv.tar.xz"

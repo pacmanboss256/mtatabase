@@ -2,34 +2,18 @@ from __future__ import annotations
 import pandas as pd
 import re
 import numpy as np
-from src.utils import zip_reduce
-import glob
+from src.utils import zip_reduce, TripDate
 import textwrap
 import datetime
 
-class TripDate:
-	'''quick object for timestamp boundaries and trip date'''
-	def __init__(self, year:int, month:int, day:int):
-		self.year = year
-		self.month = month
-		self.day = day
-		self.start_time = int(datetime.datetime(year,month,day).timestamp())
-		self.end_time = int((datetime.datetime(year,month,day) + datetime.timedelta(1)).timestamp())
-		
-	def date(self) -> datetime.datetime:
-		'''return datetime object'''
-		return datetime.datetime(self.year,self.month,self.day)
-
-	def __repr__(self) -> str:
-		return self.date().strftime('%Y-%m-%d')
 
 class LoggedDay:
-
-	'''Class for the subway arrival log trips files'''
+	'''Class for a single day of subway arrival files'''
 	def __init__(self, trip_path: str, stop_path: str):
 		'''
 		Params:
-			data_folder (str): Name of the folder that contains the desired `.csv` files from subwaydata.nyc. Use `gtfs_script.get_subwaydata` to download these.
+			trip_path (str): path to subwaydata.nyc `*_trips.csv` file
+			stop_path (str): path to subwaydata.nyc `*_stop_times.csv` file
 		'''
 		
 		self.raw_trips = pd.read_csv(trip_path)
@@ -60,11 +44,18 @@ class LoggedDay:
 
 	def _merge(self, trip: pd.DataFrame, stop: str) -> pd.DataFrame:
 		'''Join on stop times'''
-		stoplog2 = pd.read_csv(stop, dtype=str)
-		return trip.copy().set_index('trip_uid').merge(stoplog2, on='trip_uid')
+		stoplog = pd.read_csv(stop, dtype=str)
+
+		## keep consistent formatting between the two, we can melt later
+		tmap = stoplog.groupby('trip_uid').apply(lambda x: np.array([list(w) for w in np.transpose(x.values)[:-2]])).reset_index() # type: ignore
+		tmap.columns = ['trip_uid','data']
+		return trip.copy().merge(tmap, on='trip_uid')
 	
 
 	def __getitem__(self, key):
 		return self.trips[key]
+	
 	def __repr__(self) -> str:
 		return self.trips.to_string()
+
+

@@ -3,9 +3,7 @@ import pandas as pd
 import re
 import numpy as np
 from src.utils import zip_reduce
-import glob
 from typing import Any
-import datetime
 
 class Schedule:
 	'''GTFS Schedule class that has a dataframe with every trip and their scheduled stops plus arrival times'''
@@ -20,6 +18,7 @@ class Schedule:
 		self.duplicate_ids: dict[str, Any] = {}
 		self.lookup = self._create_lookup()
 		self.route_map = self._create_route_map()
+		self.start_date, self.end_date = [[d[:4], d[4:6], d[6:]] for d in pd.read_csv('gtfs/gtfs_files/calendar.txt')[["start_date","end_date"]].astype(str).values[0].tolist()]
 		return
 	
 	def _preprocess(self, raw: pd.DataFrame) -> pd.DataFrame:
@@ -90,6 +89,4 @@ class Schedule:
 	def __getitem__(self, key):
 		return self.trips[key]
 	
-	def __repr__(self) -> str:
-		return self.trips.to_string(index=False)
 	
