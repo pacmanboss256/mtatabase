@@ -73,6 +73,7 @@ class Schedule:
 			lkw = lk[lk.service_id == f'{day_type}'].reset_index()
 			dupes = lkw[lkw.tiny_id.duplicated()]
 			self.duplicate_ids[day_type] = dupes.tiny_id.values
+		
 
 		return lk
 	

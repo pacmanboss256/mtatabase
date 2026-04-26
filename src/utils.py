@@ -22,6 +22,7 @@ class TripDate:
 		self.day = day
 		self.start_time = int(datetime.datetime(year,month,day).timestamp())
 		self.end_time = int((datetime.datetime(year,month,day) + datetime.timedelta(1)).timestamp())
+		self._daytype = get_DayType(self.date())
 		
 	def date(self) -> datetime.datetime:
 		'''return datetime object'''
@@ -33,8 +34,11 @@ class TripDate:
 
 ### Functions
 
-def get_DayType(date: datetime.datetime) -> DayType:
+def get_DayType(date: str|datetime.datetime) -> DayType:
 	'''convert datetime object into service_id day type'''
+	if isinstance(date, str):
+		date = datetime.datetime.strptime(date,'%Y-%m-%d')
+	
 	match date.weekday():
 		case 6:
 			return 'Sunday'
@@ -42,14 +46,12 @@ def get_DayType(date: datetime.datetime) -> DayType:
 			return 'Saturday'
 		case _:
 			return 'Weekday'
+		
 
 
 def zip_reduce(a: list, b: list, f: Callable) -> list:
-	'''Zip two numpy arrays and reduce by a function'''
-	zipped = zip(a,b)
-	reduced = map(lambda _: reduce(f, _), zipped)
-
-	return list(reduced)
+	'''Zip two lists and reduce by a function'''
+	return list(map(lambda _: reduce(f, _), zip(a,b)))
 
 
 
@@ -60,8 +62,9 @@ def timestr_to_mta(t: str) -> str:
 	return str(int(hdm)).rjust(6,'0')
 
 
-def timestamp_to_mta(ts: int) -> int:
+def timestamp_to_mta(ts: int) -> str:
 	'''Convert a timestamp value into MTA time (which is in hundredths of a minute past midnight relative to UTC)'''
 	t = datetime.datetime.fromtimestamp(ts, tz=UTC).time()
-	return int((t.hour*60 + t.minute + t.second/60)*100)
+	htm = int((t.hour*60 + t.minute + t.second/60)*100)
+	return str(htm).rjust(6,'0')
 	
