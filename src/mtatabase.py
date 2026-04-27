@@ -77,10 +77,11 @@ class MTAtabase:
 		return pd.merge(lkw_filter, trip_filter, on='key_id')
 
 	def _merge_all(self):
+		'''join all days in logdict'''
 		merged_days = []
 		for logday in list(self.arrival_logs.logdict.values()):
 			merged_days.append(self._merge(self.schedule, logday))
 		
 		ft = pd.concat(merged_days)
-		return merged_days
+		return ft.drop(['short_id_x', 'tiny_id_x'],axis=1)
 	
